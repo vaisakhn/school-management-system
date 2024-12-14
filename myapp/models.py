@@ -15,7 +15,7 @@ class User(AbstractUser):
     address = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.address
+        return self.username
 
 
 class OfficeStaff(models.Model):
