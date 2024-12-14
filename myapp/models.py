@@ -1,30 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser,AbstractBaseUser
 
 # Create your models here.
 
-class UserProfile(models.Model):
+class User(AbstractUser):
     USER_ROLES = [
         ('admin', 'Admin'),
         ('office_staff', 'Office Staff'),
         ('librarian', 'Librarian'),
     ]
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     role = models.CharField(max_length=20, choices=USER_ROLES)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
-    email = models.EmailField(max_length=255, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.address
 
-
-from django.utils import timezone
 
 class OfficeStaff(models.Model):
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
     joined_date = models.DateField()
@@ -32,11 +27,11 @@ class OfficeStaff(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_profile.user.username} - {self.position}"
+        return f"{self.user_profile.username} - {self.position}"
     
 
 class Librarian(models.Model):
-    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
     joined_date = models.DateField()
@@ -44,7 +39,7 @@ class Librarian(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_profile.user.username} - {self.position}"
+        return f"{self.user_profile.username} - {self.position}"
 
 
 class Student(models.Model):
