@@ -1,6 +1,5 @@
 from rest_framework import serializers
-#from django.contrib.auth.models import User
-from myapp.models import User
+from Admin.models import User
 import logging
 
 class UserSerializer(serializers.ModelSerializer):
@@ -105,4 +104,5 @@ class LibrarianLoginSerializer(serializers.Serializer):
         
         logger.debug("Authentication successful.")
         attrs['user'] = user
-        return attrs
+        return 
+    
