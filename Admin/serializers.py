@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Admin.models import User
+from Admin.models import User,OfficeStaff,Librarian,LibraryHistory,Student,FeesHistory
 import logging
 
 class UserSerializer(serializers.ModelSerializer):
@@ -104,5 +104,97 @@ class LibrarianLoginSerializer(serializers.Serializer):
         
         logger.debug("Authentication successful.")
         attrs['user'] = user
-        return 
+        return attrs
     
+
+
+class OfficeStaffSerializer(serializers.ModelSerializer):
+    user_profile = UserSerializer()
+
+    class Meta:
+        model =OfficeStaff
+        fields = ['id', 'user_profile', 'department', 'position', 'joined_date', 'is_active', 'created_date']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user_profile')
+        password1=user_data.pop("password1")
+        password2=user_data.pop("password2")
+        user = User.objects.create_user(**user_data,password=password1)
+        office_staff = OfficeStaff.objects.create(user_profile=user, **validated_data)
+        return office_staff
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user_profile')
+        user = instance.user_profile
+
+        instance.department = validated_data.get('department', instance.department)
+        instance.position = validated_data.get('position', instance.position)
+        instance.joined_date = validated_data.get('joined_date', instance.joined_date)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.save()
+
+        user.email = user_data.get('email', user.email)
+        user.profile_picture = user_data.get('profile_picture', user.profile_picture)
+        user.role = user_data.get('role', user.role)
+        user.phone_number = user_data.get('phone_number', user.phone_number)
+        user.address = user_data.get('address', user.address)
+        user.save()
+
+        return instance
+
+
+
+class LibraryStaffSerializer(serializers.ModelSerializer):
+    user_profile = UserSerializer()
+
+    class Meta:
+        model =Librarian
+        fields = ['id', 'user_profile', 'department', 'position', 'joined_date', 'is_active', 'created_date']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user_profile')
+        password1=user_data.pop("password1")
+        password2=user_data.pop("password2")
+        user = User.objects.create_user(**user_data,password=password1)
+        office_staff = Librarian.objects.create(user_profile=user, **validated_data)
+        return office_staff
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user_profile')
+        user = instance.user_profile
+
+        instance.department = validated_data.get('department', instance.department)
+        instance.position = validated_data.get('position', instance.position)
+        instance.joined_date = validated_data.get('joined_date', instance.joined_date)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.save()
+
+        user.email = user_data.get('email', user.email)
+        user.profile_picture = user_data.get('profile_picture', user.profile_picture)
+        user.role = user_data.get('role', user.role)
+        user.phone_number = user_data.get('phone_number', user.phone_number)
+        user.address = user_data.get('address', user.address)
+        user.save()
+
+        return instance
+    
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['id', 'first_name', 'last_name', 'age', 'grade', 'address', 'email', 'phone_number', 'is_active', 'created_date']
+        read_only_fields = ['created_date']
+
+
+class FeesHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeesHistory
+        fields = ['id', 'student', 'amount', 'fee_type', 'remarks', 'payment_date']
+        read_only_fields = ['payment_date']
+
+
+class LibraryHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LibraryHistory
+        fields = ['id', 'student', 'book_name', 'borrow_date', 'return_date', 'status']

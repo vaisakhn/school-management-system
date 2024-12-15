@@ -17,7 +17,7 @@ class LibrarianLoginView(generics.GenericAPIView):
         username = serializer.validated_data['username']
         password = serializer.validated_data['password']
 
-        # fetch  the user by username
+        # fetch the user by username
         user = User.objects.filter(username=username).first()
 
         if user and user.check_password(password):
@@ -34,5 +34,3 @@ class LibrarianLoginView(generics.GenericAPIView):
             }, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
-        
-
