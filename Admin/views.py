@@ -121,12 +121,13 @@ class StudentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         student.delete() 
         return Response({"message": "Student deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
     
-
+# get list of fees history and create fee history
 class FeesHistoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = FeesHistory.objects.all()
     serializer_class = FeesHistorySerializer
     permission_classes=[IsAdminUser]
 
+# fee history get,update,delete view
 class FeesHistoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FeesHistory.objects.all()
     serializer_class = FeesHistorySerializer
@@ -137,11 +138,14 @@ class FeesHistoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
         return Response({"message": "fees history deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
 
 
+# get list of library history and create fee history
 class LibraryHistoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = LibraryHistory.objects.all()
     serializer_class = LibraryHistorySerializer
     permission_classes=[IsAdminUser]
 
+
+# library history get,update,delete view
 class LibraryHistoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = LibraryHistory.objects.all()
     serializer_class = LibraryHistorySerializer
