@@ -23,7 +23,7 @@ This project is a School Management System built using Django. It allows users t
 
 1. **Clone the repository:**
     ```sh
-    git clone 
+    git clone https://github.com/vaisakhn/school-management-system.git
     cd <repository_name>
     ```
 
@@ -69,6 +69,5 @@ This project is a School Management System built using Django. It allows users t
 - Django
 - djangorestframework
 - django-environ
-- ... (add any other libraries you have used)
+- 
 
-## Project Structure
